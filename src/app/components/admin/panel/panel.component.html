@@ -1,0 +1,20 @@
+<mat-drawer-container class="example-container" autosize [hasBackdrop]="false">
+  <mat-drawer #drawer class="example-sidenav" [mode]="'push'">
+    <ul class="navBarHeader">
+      <li routerLinkActive="option-selected"
+          class="list-option"
+          [routerLink]="[{outlets: {admin: ['products']}}]"><a>Productos</a></li>
+    </ul>
+  </mat-drawer>
+  <mat-drawer-content>
+    <div class="example-sidenav-content">
+      <button style="border: none; border-radius: 10px; cursor: pointer" matIconButton (click)="drawer.toggle()">
+        <mat-icon>menu</mat-icon>
+      </button>
+    </div>
+    <router-outlet name="admin"></router-outlet>
+  </mat-drawer-content>
+
+</mat-drawer-container>
+
+
