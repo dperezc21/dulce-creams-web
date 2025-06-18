@@ -1,0 +1,8 @@
+.buttons {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  height: 35px;
+  justify-content: flex-start;
+  margin: 5px;
+}
