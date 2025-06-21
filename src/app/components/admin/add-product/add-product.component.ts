@@ -3,6 +3,7 @@ import {FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators} fr
 import {MatFormField, MatInput, MatLabel} from '@angular/material/input';
 import {MatCardActions} from '@angular/material/card';
 import {MatButton} from '@angular/material/button';
+import {Product} from '../../../interfaces/product';
 
 @Component({
   selector: 'app-add-product',
@@ -22,6 +23,7 @@ import {MatButton} from '@angular/material/button';
 })
 export class AddProductComponent implements OnInit {
   goBack = output<boolean>();
+  productSaved = output<Product>();
   productForm!: FormGroup;
 
   constructor(private formBuilder: FormBuilder) {}
@@ -35,4 +37,7 @@ export class AddProductComponent implements OnInit {
     })
   }
 
+  saveProduct() {
+    this.productSaved.emit(this.productForm.value as Product);
+  }
 }

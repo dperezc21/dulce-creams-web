@@ -1,6 +1,6 @@
 <div class="add-product">
   <h4>Añadir Nuevo Producto</h4>
-  <form [formGroup]="productForm" class="product-form">
+  <form [formGroup]="productForm" class="product-form" (ngSubmit)="saveProduct()">
     <mat-form-field [appearance]="'outline'">
       <mat-label>Nombre del Producto</mat-label>
       <input matInput formControlName="name"/>
@@ -23,7 +23,7 @@
 
     <mat-card-actions class="direction-row-centered">
         <button class="margin-2-px" mat-raised-button (click)="goBack.emit(true)">Cancelar</button>
-        <button class="margin-2-px" mat-flat-button>Guardar</button>
+        <button class="margin-2-px" mat-flat-button [disabled]="productForm.invalid">Guardar</button>
     </mat-card-actions>
   </form>
 </div>

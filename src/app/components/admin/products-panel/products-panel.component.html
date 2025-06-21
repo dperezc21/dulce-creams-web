@@ -1,1 +1,12 @@
-<p>products-panel works!</p>
+<div class="product-panel">
+
+  @if(!addProduct()) {
+    <button mat-raised-button class="new-product" (click)="showAddProductForm()">Añadir Producto</button>
+  }
+
+  @if (!addProduct()) {
+    <app-products-table [products]="productList()"></app-products-table>
+  } @else {
+    <app-add-product (goBack)="showAddProductForm()" (productSaved)="addProductToList($event)"></app-add-product>
+  }
+</div>
