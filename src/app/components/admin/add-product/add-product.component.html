@@ -1,0 +1,29 @@
+<div class="add-product">
+  <h4>Añadir Nuevo Producto</h4>
+  <form [formGroup]="productForm" class="product-form">
+    <mat-form-field [appearance]="'outline'">
+      <mat-label>Nombre del Producto</mat-label>
+      <input matInput formControlName="name"/>
+    </mat-form-field>
+
+    <mat-form-field [appearance]="'outline'">
+      <mat-label>Descripcion del Producto</mat-label>
+      <input matInput formControlName="description"/>
+    </mat-form-field>
+
+    <mat-form-field [appearance]="'outline'">
+      <mat-label>Precio</mat-label>
+      <input matInput formControlName="price"/>
+    </mat-form-field>
+
+    <mat-form-field [appearance]="'outline'">
+      <mat-label>Foto</mat-label>
+      <input matInput formControlName="image" />
+    </mat-form-field>
+
+    <mat-card-actions class="direction-row-centered">
+        <button class="margin-2-px" mat-raised-button (click)="goBack.emit(true)">Cancelar</button>
+        <button class="margin-2-px" mat-flat-button>Guardar</button>
+    </mat-card-actions>
+  </form>
+</div>
