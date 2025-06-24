@@ -20,10 +20,12 @@ export class ProductsPanelComponent implements OnInit {
 
   productList: WritableSignal<Product[]> = signal<Product[]>([]);
   addProduct: WritableSignal<boolean> = signal<boolean>(false);
+  productToEditSelected?: Product;
 
   constructor(public productController: ProductController) {}
   showAddProductForm() {
     this.addProduct.update(value => !value);
+    if(this.productToEditSelected?.id) this.productToEditSelected = undefined;
   }
 
   ngOnInit(): void {
@@ -34,5 +36,11 @@ export class ProductsPanelComponent implements OnInit {
     if(!productToSave?.name) return;
     this.showAddProductForm();
     this.productController.saveProduct(productToSave);
+  }
+
+  editProduct(productToEdit: Product) {
+    if(!productToEdit?.name) return;
+    this.showAddProductForm();
+    this.productToEditSelected = productToEdit;
   }
 }

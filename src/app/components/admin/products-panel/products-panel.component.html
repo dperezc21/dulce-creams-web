@@ -5,8 +5,10 @@
   }
 
   @if (!addProduct()) {
-    <app-products-table [products]="productList()"></app-products-table>
+    <app-products-table [products]="productList()" (editProduct)="editProduct($event)"></app-products-table>
   } @else {
-    <app-add-product (goBack)="showAddProductForm()" (productSaved)="addProductToList($event)"></app-add-product>
+    <app-add-product (goBack)="showAddProductForm()"
+                     (productSaved)="addProductToList($event)"
+                     [productToEdit]="productToEditSelected"></app-add-product>
   }
 </div>

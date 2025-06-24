@@ -24,10 +24,19 @@ export class ProductController {
   }
 
   addNewProduct(product: Product): void {
-    this.productsBS.update(value => [...value, product])
+    const isTheProduct: boolean = this.productsBS().some(value => value.id === product.id);
+    this.productsBS.update(value => isTheProduct ? this.replaceProductEdited(product): [...value, product]);
+  }
+
+  replaceProductEdited(product: Product): Product[] {
+    return this.productsBS().map(value => value?.id === product?.id ? product : value);
   }
 
   getProducts(): WritableSignal<Product[]> {
     return this.productsBS as WritableSignal<Product[]>;
+  }
+
+  getLengthProduct(): number {
+    return this.productsBS().length;
   }
 }

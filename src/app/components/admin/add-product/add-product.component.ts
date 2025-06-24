@@ -1,9 +1,10 @@
-import {Component, OnInit, output} from '@angular/core';
+import {Component, CUSTOM_ELEMENTS_SCHEMA, input, OnInit, output} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
 import {MatFormField, MatInput, MatLabel} from '@angular/material/input';
 import {MatCardActions} from '@angular/material/card';
 import {MatButton} from '@angular/material/button';
 import {Product} from '../../../interfaces/product';
+import {ProductController} from '../../../controllers/product.controller';
 
 @Component({
   selector: 'app-add-product',
@@ -24,20 +25,23 @@ import {Product} from '../../../interfaces/product';
 export class AddProductComponent implements OnInit {
   goBack = output<boolean>();
   productSaved = output<Product>();
+  productToEdit = input<Product>();
   productForm!: FormGroup;
 
-  constructor(private formBuilder: FormBuilder) {}
+  constructor(private formBuilder: FormBuilder, private productController: ProductController) {}
 
   ngOnInit(): void {
     this.productForm = this.formBuilder.group({
-      name: new FormControl("", [Validators.required]),
-      description: new FormControl("", [Validators.required]),
-      price: new FormControl("", [Validators.required]),
-      image: new FormControl("", [Validators.required])
+      name: new FormControl(this.productToEdit()?.name ?? '', [Validators.required]),
+      description: new FormControl(this.productToEdit()?.description ?? '', [Validators.required]),
+      price: new FormControl(this.productToEdit()?.price ?? '', [Validators.required]),
+      image: new FormControl(this.productToEdit()?.image ?? '', [Validators.required])
     })
   }
 
   saveProduct() {
-    this.productSaved.emit(this.productForm.value as Product);
+    const product: Product = this.productForm.value as Product;
+    product.id = this.productToEdit()?.id ?? this.productController.getLengthProduct() + 1 as number;
+    this.productSaved.emit(product);
   }
 }

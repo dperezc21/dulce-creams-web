@@ -2,12 +2,12 @@
   <table class="table" mat-table [dataSource]="dataSource" matSort>
 
     <ng-container matColumnDef="name">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header> Nombre </th>
+      <th mat-header-cell *matHeaderCellDef> Nombre </th>
       <td mat-cell *matCellDef="let row"> {{row.name}} </td>
     </ng-container>
 
     <ng-container matColumnDef="description">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header> descripcion </th>
+      <th mat-header-cell *matHeaderCellDef> descripcion </th>
       <td mat-cell *matCellDef="let row"> {{row.description}} </td>
     </ng-container>
 
@@ -17,8 +17,27 @@
     </ng-container>
 
     <ng-container matColumnDef="price">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header> Precio </th>
+      <th mat-header-cell *matHeaderCellDef> Precio </th>
       <td mat-cell *matCellDef="let row"> {{row.price}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="menu">
+      <th mat-header-cell *matHeaderCellDef> </th>
+      <td mat-cell *matCellDef="let row">
+        <button matIconButton class="menu-button" [matMenuTriggerFor]="menu">
+          <mat-icon>more_vert</mat-icon>
+        </button>
+        <mat-menu #menu="matMenu">
+          <button mat-menu-item (click)="editProduct.emit(row)">
+            <mat-icon>edit</mat-icon>
+            <span>Editar</span>
+          </button>
+          <!--<button mat-menu-item disabled>
+            <mat-icon>delete</mat-icon>
+            <span>Eliminar</span>
+          </button>-->
+        </mat-menu>
+      </td>
     </ng-container>
 
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
