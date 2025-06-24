@@ -32,10 +32,10 @@
             <mat-icon>edit</mat-icon>
             <span>Editar</span>
           </button>
-          <!--<button mat-menu-item disabled>
+          <button mat-menu-item (click)="deleteProduct.emit(row)">
             <mat-icon>delete</mat-icon>
             <span>Eliminar</span>
-          </button>-->
+          </button>
         </mat-menu>
       </td>
     </ng-container>

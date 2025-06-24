@@ -5,7 +5,9 @@
   }
 
   @if (!addProduct()) {
-    <app-products-table [products]="productList()" (editProduct)="editProduct($event)"></app-products-table>
+    <app-products-table [products]="productList()"
+                        (editProduct)="editProduct($event)"
+                        (deleteProduct)="deleteProduct($event)"></app-products-table>
   } @else {
     <app-add-product (goBack)="showAddProductForm()"
                      (productSaved)="addProductToList($event)"

@@ -39,4 +39,8 @@ export class ProductController {
   getLengthProduct(): number {
     return this.productsBS().length;
   }
+
+  removeProductById(productId: number) {
+    this.productsBS.update((products: Product[]) => products.filter(value => value.id !== productId));
+  }
 }

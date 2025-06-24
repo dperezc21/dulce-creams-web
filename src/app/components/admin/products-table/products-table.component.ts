@@ -19,6 +19,7 @@ import {MatIcon} from '@angular/material/icon';
 })
 export class ProductsTableComponent implements OnInit, AfterViewInit, OnChanges {
   editProduct = output<Product>();
+  deleteProduct = output<Product>();
   @Input() products!: Product[];
   readonly displayedColumns: string[] = ['name', 'description', 'image', 'price', 'menu'];
 
@@ -37,7 +38,7 @@ export class ProductsTableComponent implements OnInit, AfterViewInit, OnChanges 
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if(changes["products"]?.currentValue?.length) {
+    if(changes["products"]?.currentValue) {
       this.dataSource = new MatTableDataSource(changes["products"]["currentValue"]);
     }
   }
