@@ -1,0 +1,25 @@
+.orders-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100dvh;
+  width: 100%;
+}
+
+.order-button {
+  width: 450px;
+  height: 150px;
+  cursor: pointer;
+  border-radius: 40px;
+  border: none;
+  font-size: 45px;
+  font-family: cursive;
+  background: radial-gradient(#afecbd, #23b846);
+  transition-property: font-size, border;
+  transition-duration: 0.5s, 0.1s;
+}
+
+.order-button:hover {
+  font-size: 46px;
+  border: black solid 2px;
+}
