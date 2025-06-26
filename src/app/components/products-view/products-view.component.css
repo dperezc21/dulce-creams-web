@@ -1,0 +1,22 @@
+
+.products-container {
+  display: flex;
+  flex-direction: row;
+  height: 75dvh;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+}
+
+.product-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  height: 370px;
+  cursor: pointer;
+}
+
+.border-radius-5 {
+  border-radius: 5px;
+}

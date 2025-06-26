@@ -1,5 +1,11 @@
 <div class="orders-container">
-
-  <button class="order-button">ORDENAR</button>
-
+  @if(ordering) {
+    <app-products-view [products]="products()"></app-products-view>
+    <div class="cancel-button-container">
+      <button mat-flat-button (click)="this.ordering = !this.ordering">Cancelar</button>
+    </div>
+  }
+  @if(!ordering) {
+    <button class="order-button" (click)="this.ordering = !this.ordering">ORDENAR</button>
+  }
 </div>

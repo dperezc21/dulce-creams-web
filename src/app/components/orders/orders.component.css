@@ -1,5 +1,6 @@
 .orders-container {
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   height: 100dvh;
@@ -14,7 +15,7 @@
   border: none;
   font-size: 45px;
   font-family: cursive;
-  background: radial-gradient(#afecbd, #23b846);
+  background: radial-gradient(#afecbd, #59bf71);
   transition-property: font-size, border;
   transition-duration: 0.5s, 0.1s;
 }
@@ -22,4 +23,10 @@
 .order-button:hover {
   font-size: 46px;
   border: black solid 2px;
+}
+
+.cancel-button-container {
+  display: flex;
+  justify-content: flex-end;
+  width: 90%;
 }
