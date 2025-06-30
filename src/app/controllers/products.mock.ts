@@ -9,6 +9,20 @@ export class ProductsMock {
       description: "",
       price: 13000,
       image: "/img.webp"
+    },
+    {
+      id: 2,
+      name: "fresas con chocolate",
+      description: "",
+      price: 10000,
+      image: "/img.webp"
+    },
+    {
+      id: 3,
+      name: "fresas con chocolate",
+      description: "",
+      price: 10000,
+      image: "/img.webp"
     }
   ]
 

@@ -1,10 +1,16 @@
 <h2>Seleccionar Producto</h2>
 <div class="products-container">
   @for (product of products(); track product.id) {
-    <mat-card class="product-card">
-      <img ngSrc="{{product.image}}" alt="" width="200" height="300" class="border-radius-5">
-      <mat-card-title>{{product.name}}</mat-card-title>
-      <span>$ {{product.price}}</span>
-    </mat-card>
+    <div class="ordering-product">
+      <mat-card class="product-card {{(product | validProductsSelected: productsSelected()) ? 'product-selected' : ''}}"
+                (click)="selected(product)">
+        <img ngSrc="{{product.image}}" alt="" width="200" height="300" class="border-radius-5">
+        <mat-card-title>{{product.name}}</mat-card-title>
+        <span>$ {{product.price}}</span>
+      </mat-card>
+      @if (product | validProductsSelected: productsSelected()) {
+        <button mat-stroked-button>Editar</button>
+      }
+    </div>
   }
 </div>
