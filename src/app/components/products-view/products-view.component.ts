@@ -3,7 +3,6 @@ import {Product} from '../../interfaces/product';
 import {NgOptimizedImage} from '@angular/common';
 import {MatCard, MatCardTitle} from '@angular/material/card';
 import {Ordering} from '../../interfaces/ordering';
-import {MatIcon} from '@angular/material/icon';
 import {MatButton} from '@angular/material/button';
 import {ValidProductsSelectedPipe} from '../../pipes/products-selected.pipe';
 
@@ -14,8 +13,7 @@ import {ValidProductsSelectedPipe} from '../../pipes/products-selected.pipe';
     MatCard,
     MatCardTitle,
     MatButton,
-    ValidProductsSelectedPipe,
-    MatIcon
+    ValidProductsSelectedPipe
   ],
   templateUrl: './products-view.component.html',
   standalone: true,
@@ -24,22 +22,32 @@ import {ValidProductsSelectedPipe} from '../../pipes/products-selected.pipe';
 export class ProductsViewComponent {
 
   products = input<Product[]>();
-  //productSelectedToOrder = output<Ordering>();
+  productsSelectedToOrder = output<Ordering[]>();
   productsSelected = signal<Product[]>([]);
 
-  selected(product: Product, quantity: number = 1) {
-    //const ordering: Ordering = {product, quantity};
+  selected(product: Product) {
+
     const productIsSelected: Product = this.productsSelected().find(value => value?.id === product?.id) as Product;
+
     if(productIsSelected?.id) {
       this.discard(productIsSelected);
+      const orderingProduct: Ordering[] = this.mapProductSelected();
+      this.productsSelectedToOrder.emit(orderingProduct);
       return;
     }
     this.productsSelected.update((value: Product[]) => [...value, product]);
-    //this.productSelectedToOrder.emit(ordering);
+    const orderingProduct: Ordering[] = this.mapProductSelected();
+    this.productsSelectedToOrder.emit(orderingProduct);
   }
 
   discard(product: Product) {
     const filterProducts: Product[] = this.productsSelected().filter((value1: Product) => value1.id !== product.id);
     this.productsSelected.update(() => [...filterProducts]);
+  }
+
+  mapProductSelected(): Ordering[] {
+    return this.productsSelected().map((value: Product) => {
+      return {product: value}
+    }) as Ordering[];
   }
 }

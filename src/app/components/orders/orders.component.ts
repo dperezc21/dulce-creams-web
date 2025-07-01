@@ -4,6 +4,7 @@ import {Product} from '../../interfaces/product';
 import {ProductsMock} from '../../controllers/products.mock';
 import {ProductsViewComponent} from '../products-view/products-view.component';
 import {MatButton} from '@angular/material/button';
+import {Ordering} from '../../interfaces/ordering';
 
 @Component({
   selector: 'app-orders',
@@ -17,7 +18,8 @@ import {MatButton} from '@angular/material/button';
 })
 export class OrdersComponent implements OnInit {
   ordering: boolean = false;
-  products = signal<Product[]>([])
+  products = signal<Product[]>([]);
+  orderingProducts = signal<Ordering[]>([]);
 
   constructor(private productController: ProductController) {}
 
@@ -26,5 +28,7 @@ export class OrdersComponent implements OnInit {
     this.products = this.productController.getProducts();
   }
 
-
+  productsSelected(ordering1: Ordering[]) {
+    this.orderingProducts.update(() => [...ordering1]);
+  }
 }
