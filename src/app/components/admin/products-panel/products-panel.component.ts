@@ -6,6 +6,7 @@ import {ProductsTableComponent} from '../products-table/products-table.component
 import {AddProductComponent} from '../add-product/add-product.component';
 import {ConfirmDialogComponent} from '../../confirm-dialog/confirm-dialog.component';
 import {MatDialog} from '@angular/material/dialog';
+import {ProductsMock} from '../../../controllers/products.mock';
 
 @Component({
   selector: 'app-products-panel',
@@ -32,6 +33,7 @@ export class ProductsPanelComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.productController.setProducts(ProductsMock.productsMock());
     this.productList = this.productController.getProducts();
   }
 

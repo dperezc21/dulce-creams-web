@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import {RouterLink, RouterLinkActive, RouterOutlet} from '@angular/router';
+import {Component, OnInit} from '@angular/core';
+import {Router, RouterLink, RouterLinkActive, RouterOutlet} from '@angular/router';
 import {MatDrawer, MatDrawerContainer, MatDrawerContent} from '@angular/material/sidenav';
 import {MatIcon} from '@angular/material/icon';
 
@@ -20,6 +20,10 @@ import {MatIcon} from '@angular/material/icon';
   standalone: true,
   styleUrl: './panel.component.css'
 })
-export class PanelComponent {
+export class PanelComponent implements OnInit {
+  constructor(private router: Router) {}
 
+  ngOnInit(): void {
+    this.router.navigate(['panel', {outlets: {admin: ['products']}}]).then();
+  }
 }
