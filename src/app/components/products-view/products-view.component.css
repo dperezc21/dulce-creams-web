@@ -1,3 +1,9 @@
+.header-products-view {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
 
 .products-container {
   display: flex;

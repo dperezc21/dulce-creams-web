@@ -2,11 +2,8 @@
   @if(ordering) {
     <app-products-view [products]="products()" (productsSelectedToOrder)="productsSelected($event)"></app-products-view>
     <div class="cancel-button-container">
-      <button mat-flat-button (click)="this.ordering = !this.ordering">Cancelar</button>
-      {{this.orderingProducts().length}}
-      @if(this.orderingProducts().length) {
-        <button mat-flat-button>Hacer Pedido</button>
-      }
+      <button class="margin-2-px" mat-stroked-button (click)="this.ordering = !this.ordering">Cancelar</button>
+      <button class="margin-2-px" mat-flat-button [disabled]="!orderingProducts().length" (click)="doOrder()">Hacer Pedido</button>
     </div>
   }
   @if(!ordering) {

@@ -5,6 +5,7 @@ import {MatCard, MatCardTitle} from '@angular/material/card';
 import {Ordering} from '../../interfaces/ordering';
 import {MatButton} from '@angular/material/button';
 import {ValidProductsSelectedPipe} from '../../pipes/products-selected.pipe';
+import {TotalPricePipe} from '../../pipes/total-price.pipe';
 
 @Component({
   selector: 'app-products-view',
@@ -12,8 +13,8 @@ import {ValidProductsSelectedPipe} from '../../pipes/products-selected.pipe';
     NgOptimizedImage,
     MatCard,
     MatCardTitle,
-    MatButton,
-    ValidProductsSelectedPipe
+    ValidProductsSelectedPipe,
+    TotalPricePipe
   ],
   templateUrl: './products-view.component.html',
   standalone: true,

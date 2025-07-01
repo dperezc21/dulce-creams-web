@@ -31,4 +31,8 @@ export class OrdersComponent implements OnInit {
   productsSelected(ordering1: Ordering[]) {
     this.orderingProducts.update(() => [...ordering1]);
   }
+
+  doOrder() {
+
+  }
 }
