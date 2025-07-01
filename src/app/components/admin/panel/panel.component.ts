@@ -6,8 +6,6 @@ import {MatIcon} from '@angular/material/icon';
 @Component({
   selector: 'app-panel',
   imports: [
-    /*    RouterLink,
-        RouterLinkActive,*/
     RouterOutlet,
     MatDrawer,
     MatDrawerContainer,
