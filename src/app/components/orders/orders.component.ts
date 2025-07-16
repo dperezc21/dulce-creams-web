@@ -5,6 +5,7 @@ import {ProductsMock} from '../../controllers/products.mock';
 import {ProductsViewComponent} from '../products-view/products-view.component';
 import {MatButton} from '@angular/material/button';
 import {Ordering} from '../../interfaces/ordering';
+import {WebSocketApiService} from '../../services/web-socket-api.service';
 
 @Component({
   selector: 'app-orders',
@@ -21,9 +22,10 @@ export class OrdersComponent implements OnInit {
   products = signal<Product[]>([]);
   orderingProducts = signal<Ordering[]>([]);
 
-  constructor(private productController: ProductController) {}
+  constructor(private productController: ProductController, private webSocket: WebSocketApiService) {}
 
   ngOnInit(): void {
+    this.webSocket.connect();
     this.productController.setProducts(ProductsMock.productsMock());
     this.products = this.productController.getProducts();
   }
@@ -33,6 +35,7 @@ export class OrdersComponent implements OnInit {
   }
 
   doOrder() {
-
+    this.webSocket.sendMessage(this.orderingProducts());
+    //console.log("hacer pedido")
   }
 }
