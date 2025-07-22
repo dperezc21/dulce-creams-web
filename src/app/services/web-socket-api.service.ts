@@ -8,12 +8,10 @@ import {WebSocketRepository} from '../interfaces/web-socket-repository';
 export class WebSocketApiService implements WebSocketRepository<any> {
 
   private socket$: WebSocketSubject<any>;
-  private url = 'ws://localhost:8080/'; // Reemplaza con tu URL
+  private url = "ws://localhost:3000"; // Reemplaza con tu URL
 
   constructor() {
-    this.socket$ = webSocket({
-      url: "ws://localhost:4200/3000"
-    });
+    this.socket$ = webSocket(this.url);
   }
 
   public connect(): void {
