@@ -7,7 +7,6 @@ import {AddProductComponent} from '../add-product/add-product.component';
 import {ConfirmDialogComponent} from '../../confirm-dialog/confirm-dialog.component';
 import {MatDialog} from '@angular/material/dialog';
 import {ProductsMock} from '../../../controllers/products.mock';
-import {WebSocketApiService} from '../../../services/web-socket-api.service';
 
 @Component({
   selector: 'app-products-panel',
@@ -27,7 +26,7 @@ export class ProductsPanelComponent implements OnInit {
   dialog = inject(MatDialog);
   productToEditSelected?: Product;
 
-  constructor(public productController: ProductController, private webSocket: WebSocketApiService) {}
+  constructor(public productController: ProductController) {}
   showAddProductForm() {
     this.addProduct.update(value => !value);
     if(this.productToEditSelected?.id) this.productToEditSelected = undefined;
@@ -36,7 +35,6 @@ export class ProductsPanelComponent implements OnInit {
   ngOnInit(): void {
     this.productController.setProducts(ProductsMock.productsMock());
     this.productList = this.productController.getProducts();
-    this.webSocket.getMessages().subscribe(console.log);
   }
 
   addProductToList(productToSave: Product) {
