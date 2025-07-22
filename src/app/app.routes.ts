@@ -1,16 +1,10 @@
 import {Routes} from '@angular/router';
 import {adminRoutes} from './routes/admin.routes';
-import {OrdersComponent} from './components/orders/orders.component';
 
 export const routes: Routes = [
   {
-    path: '',
-    redirectTo: 'home',
-    pathMatch: 'full'
-  },
-  {
-    path: 'home',
-    component: OrdersComponent
+    path: "",
+    loadChildren: () => import('./routes/home.routes').then(value => value.HomeRoutes)
   },
   {
     path: "panel",
