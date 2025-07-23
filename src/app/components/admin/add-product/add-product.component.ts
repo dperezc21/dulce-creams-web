@@ -1,10 +1,9 @@
-import {Component, CUSTOM_ELEMENTS_SCHEMA, input, OnInit, output} from '@angular/core';
+import {Component, input, OnInit, output} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
 import {MatFormField, MatInput, MatLabel} from '@angular/material/input';
 import {MatCardActions} from '@angular/material/card';
 import {MatButton} from '@angular/material/button';
 import {Product} from '../../../interfaces/product';
-import {ProductController} from '../../../controllers/product.controller';
 
 @Component({
   selector: 'app-add-product',
@@ -28,7 +27,7 @@ export class AddProductComponent implements OnInit {
   productToEdit = input<Product>();
   productForm!: FormGroup;
 
-  constructor(private formBuilder: FormBuilder, private productController: ProductController) {}
+  constructor(private formBuilder: FormBuilder) {}
 
   ngOnInit(): void {
     this.productForm = this.formBuilder.group({
@@ -40,8 +39,6 @@ export class AddProductComponent implements OnInit {
   }
 
   saveProduct() {
-    const product: Product = this.productForm.value as Product;
-    product.id = this.productToEdit()?.id ?? this.productController.getLengthProduct() + 1 as number;
-    this.productSaved.emit(product);
+    this.productSaved.emit(this.productForm.value as Product);
   }
 }

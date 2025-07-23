@@ -1,22 +1,24 @@
 import {Injectable, signal, WritableSignal} from '@angular/core';
-import {of, tap} from 'rxjs';
+import {tap} from 'rxjs';
 import {Product} from '../interfaces/product';
 import {SnackBarService} from '../services/snack-bar.service';
+import {ProductService} from '../services/product-service';
 
 @Injectable({ providedIn: "root" })
 export class ProductController {
 
   private productsBS = signal<Product[]>([]);
 
-  constructor(private snackBarService: SnackBarService) {
+  constructor(private productService: ProductService,
+              private snackBarService: SnackBarService) {
   }
 
   saveProduct(productToSave: Product): void {
-    of(true)
+    this.productService.saveProducts(productToSave)
        .pipe(tap(value => {
-         this.addNewProduct(productToSave);
+         this.addNewProduct(value);
          this.snackBarService.showMessage("producto guardado");
-       })).subscribe();
+       })).subscribe({ error: err => console.log(err) });
   }
 
   setProducts(productList: Product[]): void {
