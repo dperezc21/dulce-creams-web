@@ -24,8 +24,8 @@ export class OrdersComponent implements OnInit {
   constructor(private productController: ProductController) {}
 
   ngOnInit(): void {
-    this.productController.setProducts(ProductsMock.productsMock());
-    this.products = this.productController.getProducts();
+    this.productController.getAllProducts();
+    this.products = this.productController.getProducts$();
   }
 
   productsSelected(ordering1: Ordering[]) {
@@ -33,6 +33,6 @@ export class OrdersComponent implements OnInit {
   }
 
   doOrder() {
-    console.log("hacer pedido")
+    console.log("hacer pedido");
   }
 }

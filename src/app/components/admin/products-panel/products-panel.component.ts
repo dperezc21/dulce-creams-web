@@ -33,8 +33,8 @@ export class ProductsPanelComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.productController.setProducts(ProductsMock.productsMock());
-    this.productList = this.productController.getProducts();
+    this.productController.getAllProducts();
+    this.productList = this.productController.getProducts$();
   }
 
   addProductToList(productToSave: Product) {

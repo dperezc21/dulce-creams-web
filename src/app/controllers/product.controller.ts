@@ -3,6 +3,7 @@ import {tap} from 'rxjs';
 import {Product} from '../interfaces/product';
 import {SnackBarService} from '../services/snack-bar.service';
 import {ProductService} from '../services/product-service';
+import {ProductsMock} from './products.mock';
 
 @Injectable({ providedIn: "root" })
 export class ProductController {
@@ -21,11 +22,18 @@ export class ProductController {
        })).subscribe({ error: err => console.log(err) });
   }
 
+  getAllProducts(): void {
+    this.productService.getProducts()
+      .pipe(tap((value: Product[]) => {
+        this.setProducts(value?.length ? value : ProductsMock.productsMock());
+      })).subscribe();
+  }
+
   setProducts(productList: Product[]): void {
     this.productsBS.set(productList);
   }
 
-  addNewProduct(product: Product): void {
+  private addNewProduct(product: Product): void {
     const isTheProduct: boolean = this.productsBS().some(value => value.id === product.id);
     this.productsBS.update(value => isTheProduct ? this.replaceProductEdited(product): [...value, product]);
   }
@@ -34,7 +42,7 @@ export class ProductController {
     return this.productsBS().map(value => value?.id === product?.id ? product : value);
   }
 
-  getProducts(): WritableSignal<Product[]> {
+  getProducts$(): WritableSignal<Product[]> {
     return this.productsBS as WritableSignal<Product[]>;
   }
 

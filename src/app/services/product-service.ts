@@ -13,4 +13,9 @@ export class ProductService {
     return this.http.post(`${PRODUCT_URL}`, product)
       .pipe(map(value => value as Product));
   }
+
+  getProducts(): Observable<Product[]> {
+    return this.http.get(`${PRODUCT_URL}`)
+      .pipe(map(value => value as Product[]));
+  }
 }
