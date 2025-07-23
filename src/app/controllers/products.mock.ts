@@ -5,24 +5,24 @@ export class ProductsMock {
   private static productList: Product[] = [
     {
       id: 1,
-      name: "fresas con crema",
-      description: "",
-      price: 13000,
-      image: "/img.webp"
+      product_name: "fresas con crema",
+      product_description: "",
+      product_price: 13000,
+      product_image: "/img.webp"
     },
     {
       id: 2,
-      name: "fresas con chocolate",
-      description: "",
-      price: 10000,
-      image: "/img.webp"
+      product_name: "fresas con chocolate",
+      product_description: "",
+      product_price: 10000,
+      product_image: "/img.webp"
     },
     {
       id: 3,
-      name: "fresas con chocolate",
-      description: "",
-      price: 10000,
-      image: "/img.webp"
+      product_name: "fresas con chocolate",
+      product_description: "",
+      product_price: 10000,
+      product_image: "/img.webp"
     }
   ]
 

@@ -37,13 +37,11 @@ export class ProductsPanelComponent implements OnInit {
   }
 
   addProductToList(productToSave: Product) {
-    if(!productToSave?.name) return;
     this.showAddProductForm();
     this.productController.saveProduct(productToSave);
   }
 
   editProduct(productToEdit: Product) {
-    if(!productToEdit?.name) return;
     this.showAddProductForm();
     this.productToEditSelected = productToEdit;
   }
@@ -54,7 +52,7 @@ export class ProductsPanelComponent implements OnInit {
       enterAnimationDuration: "500ms",
       exitAnimationDuration: "250ms",
     })
-    dialogRef.componentInstance.title = `Eliminar ${product.name}`;
+    dialogRef.componentInstance.title = `Eliminar ${product.product_name}`;
     dialogRef.componentInstance.message = "¿Seguro que quiere eliminar este producto?";
     dialogRef.afterClosed().subscribe(value => {
       if(value) this.productController.removeProductById(product.id as number);

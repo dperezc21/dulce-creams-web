@@ -3,7 +3,6 @@ import {Product} from '../../interfaces/product';
 import {NgOptimizedImage} from '@angular/common';
 import {MatCard, MatCardTitle} from '@angular/material/card';
 import {Ordering} from '../../interfaces/ordering';
-import {MatButton} from '@angular/material/button';
 import {ValidProductsSelectedPipe} from '../../pipes/products-selected.pipe';
 import {TotalPricePipe} from '../../pipes/total-price.pipe';
 

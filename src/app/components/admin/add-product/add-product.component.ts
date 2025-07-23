@@ -31,14 +31,22 @@ export class AddProductComponent implements OnInit {
 
   ngOnInit(): void {
     this.productForm = this.formBuilder.group({
-      name: new FormControl(this.productToEdit()?.name ?? '', [Validators.required]),
-      description: new FormControl(this.productToEdit()?.description ?? '', [Validators.required]),
-      price: new FormControl(this.productToEdit()?.price ?? '', [Validators.required]),
-      image: new FormControl(this.productToEdit()?.image ?? '', [Validators.required])
+      name: new FormControl(this.productToEdit()?.product_name ?? '', [Validators.required]),
+      description: new FormControl(this.productToEdit()?.product_description ?? '', [Validators.required]),
+      price: new FormControl(this.productToEdit()?.product_price ?? '', [Validators.required]),
+      image: new FormControl(this.productToEdit()?.product_image ?? '', [Validators.required])
     })
   }
 
   saveProduct() {
-    this.productSaved.emit(this.productForm.value as Product);
+    const {name, description, price, image} = this.productForm.value;
+    const product: Product = {
+      id: this.productToEdit()?.id ?? undefined,
+      product_name: name,
+      product_description: description,
+      product_price: price,
+      product_image: image
+    }
+    this.productSaved.emit(product);
   }
 }

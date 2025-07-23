@@ -7,9 +7,9 @@
     <div class="ordering-product">
       <mat-card class="product-card {{(product | validProductsSelected: productsSelected()) ? 'product-selected' : ''}}"
                 (click)="selected(product)">
-        <img ngSrc="{{product.image}}" alt="" width="200" height="300" class="border-radius-5">
-        <mat-card-title>{{product.name}}</mat-card-title>
-        <span>$ {{product.price}}</span>
+        <img ngSrc="{{product.product_image}}" alt="" width="200" height="300" class="border-radius-5">
+        <mat-card-title>{{product.product_name}}</mat-card-title>
+        <span>$ {{product.product_price}}</span>
       </mat-card>
     </div>
   }
