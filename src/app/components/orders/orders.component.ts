@@ -1,7 +1,6 @@
 import {Component, OnInit, signal} from '@angular/core';
 import {ProductController} from '../../controllers/product.controller';
 import {Product} from '../../interfaces/product';
-import {ProductsMock} from '../../controllers/products.mock';
 import {ProductsViewComponent} from '../products-view/products-view.component';
 import {MatButton} from '@angular/material/button';
 import {Ordering} from '../../interfaces/ordering';
