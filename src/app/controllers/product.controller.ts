@@ -1,9 +1,8 @@
 import {Injectable, signal, WritableSignal} from '@angular/core';
-import {tap} from 'rxjs';
+import {catchError, of, tap} from 'rxjs';
 import {Product} from '../interfaces/product';
 import {SnackBarService} from '../services/snack-bar.service';
 import {ProductService} from '../services/product-service';
-import {ProductsMock} from './products.mock';
 
 @Injectable({ providedIn: "root" })
 export class ProductController {
@@ -25,8 +24,9 @@ export class ProductController {
   getAllProducts(): void {
     this.productService.getProducts()
       .pipe(tap((value: Product[]) => {
-        this.setProducts(value?.length ? value : ProductsMock.productsMock());
-      })).subscribe();
+        this.setProducts(value ?? []);
+      }), catchError(err => of("Error to get products")))
+      .subscribe({error: err => console.error(err)});
   }
 
   setProducts(productList: Product[]): void {
