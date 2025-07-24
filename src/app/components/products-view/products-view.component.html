@@ -3,14 +3,20 @@
   <span class="font-size-22"><strong>total:</strong> ${{ productsSelected() | totalPrice }}</span>
 </div>
 <div class="products-container">
-  @for (product of products(); track product.id) {
-    <div class="ordering-product">
-      <mat-card class="product-card {{(product | validProductsSelected: productsSelected()) ? 'product-selected' : ''}}"
-                (click)="selected(product)">
-        <img ngSrc="{{product.product_image}}" alt="" width="200" height="300" class="border-radius-5">
-        <mat-card-title>{{product.product_name}}</mat-card-title>
-        <span>$ {{product.product_price}}</span>
-      </mat-card>
-    </div>
-  }
+  <div *ngIf="products()?.length else thereAreNotProducts">
+    @for (product of products(); track product.id) {
+      <div class="ordering-product">
+        <mat-card class="product-card {{(product | validProductsSelected: productsSelected()) ? 'product-selected' : ''}}"
+                  (click)="selected(product)">
+          <img ngSrc="{{product.product_image}}" alt="" width="200" height="300" class="border-radius-5">
+          <mat-card-title>{{product.product_name}}</mat-card-title>
+          <span>$ {{product.product_price}}</span>
+        </mat-card>
+      </div>
+    }
+  </div>
 </div>
+
+<ng-template #thereAreNotProducts>
+  <h4 class="color-brown">No hay productos, comuniquese con el administrador</h4>
+</ng-template>

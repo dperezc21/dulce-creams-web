@@ -1,6 +1,6 @@
 import {Component, input, output, signal} from '@angular/core';
 import {Product} from '../../interfaces/product';
-import {NgOptimizedImage} from '@angular/common';
+import {NgIf, NgOptimizedImage} from '@angular/common';
 import {MatCard, MatCardTitle} from '@angular/material/card';
 import {Ordering} from '../../interfaces/ordering';
 import {ValidProductsSelectedPipe} from '../../pipes/products-selected.pipe';
@@ -13,7 +13,8 @@ import {TotalPricePipe} from '../../pipes/total-price.pipe';
     MatCard,
     MatCardTitle,
     ValidProductsSelectedPipe,
-    TotalPricePipe
+    TotalPricePipe,
+    NgIf
   ],
   templateUrl: './products-view.component.html',
   standalone: true,
