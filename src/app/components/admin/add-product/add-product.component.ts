@@ -4,6 +4,7 @@ import {MatFormField, MatInput, MatLabel} from '@angular/material/input';
 import {MatCardActions} from '@angular/material/card';
 import {MatButton} from '@angular/material/button';
 import {Product} from '../../../interfaces/product';
+import {NgIf} from '@angular/common';
 
 @Component({
   selector: 'app-add-product',
@@ -44,9 +45,20 @@ export class AddProductComponent implements OnInit {
       id: this.productToEdit()?.id ?? undefined,
       product_name: name,
       product_description: description,
-      product_price: price,
+      product_price: Number(price),
       product_image: image
     }
     this.productSaved.emit(product);
+  }
+
+  fileSelected($event: any) {
+    const file: File = $event?.target["files"][0];
+    const fileReader: FileReader = new FileReader();
+    if(!file) return;
+    fileReader.onload = (value: any) => {
+      this.productForm.get('image')?.setValue(value.target.result);
+    }
+    fileReader.readAsDataURL(file);
+
   }
 }

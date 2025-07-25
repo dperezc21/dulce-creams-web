@@ -1,6 +1,6 @@
 .add-product {
   display: flex;
-  width: 80%;
+  width: 60%;
   justify-content: center;
   flex-direction: column;
   align-items: center;
@@ -10,4 +10,9 @@
   display: flex;
   flex-direction: column;
   width: 50%;
+}
+.image-container {
+  display: flex;
+  align-items: center;
+  object-fit: contain;
 }

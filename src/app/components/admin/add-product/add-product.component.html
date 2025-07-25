@@ -1,3 +1,4 @@
+<div class="direction-row-centered">
 <div class="add-product">
   <h4>Añadir Nuevo Producto</h4>
   <form [formGroup]="productForm" class="product-form" (ngSubmit)="saveProduct()">
@@ -16,14 +17,22 @@
       <input matInput formControlName="price"/>
     </mat-form-field>
 
-    <mat-form-field [appearance]="'outline'">
-      <mat-label>Foto</mat-label>
-      <input matInput formControlName="image" />
-    </mat-form-field>
+    <input type="file" #selectImage hidden="hidden" (change)="fileSelected($event)" required/>
+    <button class="margin-2-px"
+            mat-stroked-button
+            type="button"
+            (click)="selectImage.click()">
+      {{productForm.get('image')?.value && productToEdit()?.id ? 'Cambiar Imagen' : 'Seleccionar Foto'}}</button>
 
     <mat-card-actions class="direction-row-centered">
         <button type="button" class="margin-2-px" mat-raised-button (click)="goBack.emit(true)">Cancelar</button>
         <button type="submit" class="margin-2-px" mat-flat-button [disabled]="productForm.invalid">Guardar</button>
     </mat-card-actions>
   </form>
+</div>
+    <div class="image-container">
+      <img
+        src="{{productForm.get('image')?.value ? productForm.get('image')?.value : '/screenshot_frame.svg'}}"
+        alt="" width="300" height="300"/>
+    </div>
 </div>
