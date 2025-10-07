@@ -3,6 +3,11 @@ import {adminRoutes} from './routes/admin.routes';
 
 export const routes: Routes = [
   {
+    path: '',
+    redirectTo: 'home',
+    pathMatch: 'full'
+  },
+  {
     path: "",
     loadChildren: () => import('./routes/home.routes').then(value => value.HomeRoutes)
   },
