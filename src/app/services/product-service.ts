@@ -18,4 +18,11 @@ export class ProductService {
     return this.http.get(`${PRODUCT_URL}`)
       .pipe(map(value => value as Product[]));
   }
+
+  updateFile(image: File): Observable<boolean> {
+    const data = new FormData();
+    data.set("file", image);
+    return this.http.put<boolean>(`${PRODUCT_URL}/image`, data)
+      .pipe(map(value => value));
+  }
 }

@@ -17,7 +17,7 @@
       <input matInput formControlName="price"/>
     </mat-form-field>
 
-    <input type="file" #selectImage hidden="hidden" (change)="fileSelected($event)" required/>
+    <input type="file" #selectImage hidden="hidden" (change)="getFileSelected($event)" required/>
     <button class="margin-2-px"
             mat-stroked-button
             type="button"
@@ -32,7 +32,7 @@
 </div>
     <div class="image-container">
       <img
-        src="{{productForm.get('image')?.value ? productForm.get('image')?.value : '/screenshot_frame.svg'}}"
+        ngSrc="{{productForm.get('image')?.value ? productForm.get('image')?.value : '/screenshot_frame.svg'}}"
         alt="" width="300" height="300"/>
     </div>
 </div>

@@ -1,5 +1,5 @@
 import {Injectable, signal, WritableSignal} from '@angular/core';
-import {catchError, of, tap} from 'rxjs';
+import {catchError, concatMap, map, of, tap} from 'rxjs';
 import {Product} from '../interfaces/product';
 import {SnackBarService} from '../services/snack-bar.service';
 import {ProductService} from '../services/product-service';
@@ -13,19 +13,25 @@ export class ProductController {
               private snackBarService: SnackBarService) {
   }
 
-  saveProduct(productToSave: Product): void {
+  saveProduct({ product_image, ...productToSave }: Product): void {
     this.productService.saveProducts(productToSave)
-       .pipe(tap(value => {
-         this.addNewProduct(value);
-         this.snackBarService.showMessage("producto guardado");
-       })).subscribe({ error: err => console.log(err) });
+       .pipe(concatMap(value => {
+         return this.productService.updateFile(product_image as File)
+           .pipe(map(value1 => value1 ? value : null));
+       })).pipe(tap(value => {
+         if(value?.id) {
+           this.addNewProduct(value as Product);
+           this.snackBarService.showMessage("producto guardado");
+         }
+    }))
+      .subscribe({ error: err => console.log(err) });
   }
 
   getAllProducts(): void {
     this.productService.getProducts()
       .pipe(tap((value: Product[]) => {
         this.setProducts(value ?? []);
-      }), catchError(err => of("Error to get products")))
+      }), catchError(() => of("Error to get products")))
       .subscribe({error: err => console.error(err)});
   }
 

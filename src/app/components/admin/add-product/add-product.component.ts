@@ -4,7 +4,7 @@ import {MatFormField, MatInput, MatLabel} from '@angular/material/input';
 import {MatCardActions} from '@angular/material/card';
 import {MatButton} from '@angular/material/button';
 import {Product} from '../../../interfaces/product';
-import {NgIf} from '@angular/common';
+import {NgOptimizedImage} from '@angular/common';
 
 @Component({
   selector: 'app-add-product',
@@ -16,7 +16,8 @@ import {NgIf} from '@angular/common';
     MatLabel,
     MatFormField,
     MatCardActions,
-    MatButton
+    MatButton,
+    NgOptimizedImage
   ],
   templateUrl: './add-product.component.html',
   standalone: true,
@@ -27,6 +28,7 @@ export class AddProductComponent implements OnInit {
   productSaved = output<Product>();
   productToEdit = input<Product>();
   productForm!: FormGroup;
+  fileSelected!: File;
 
   constructor(private formBuilder: FormBuilder) {}
 
@@ -40,23 +42,24 @@ export class AddProductComponent implements OnInit {
   }
 
   saveProduct() {
-    const {name, description, price, image} = this.productForm.value;
+    const {name, description, price} = this.productForm.value;
     const product: Product = {
       id: this.productToEdit()?.id ?? undefined,
       product_name: name,
       product_description: description,
       product_price: Number(price),
-      product_image: image
+      product_image: this.fileSelected
     }
     this.productSaved.emit(product);
   }
 
-  fileSelected($event: any) {
+  getFileSelected($event: any) {
     const file: File = $event?.target["files"][0];
     const fileReader: FileReader = new FileReader();
     if(!file) return;
     fileReader.onload = (value: any) => {
       this.productForm.get('image')?.setValue(value.target.result);
+      this.fileSelected = file;
     }
     fileReader.readAsDataURL(file);
 
