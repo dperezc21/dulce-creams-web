@@ -1,6 +1,12 @@
-import {Product} from '../interfaces/product';
+import {Product, ProductTopping} from '../interfaces/product';
 
 export class ProductsMock {
+
+  private static toppings: ProductTopping[] = [
+    {name: "chocolate", price: 3000, selected: false},
+    {name: "arequipe", price: 2000, selected: false},
+    {name: "Leche condensada", price: 1000, selected: false},
+  ]
 
   private static productList: Product[] = [
     {
@@ -24,7 +30,7 @@ export class ProductsMock {
       product_price: 10000,
       product_image: "/img.webp"
     }
-  ]
+  ].map(value => {return{...value, toppings: this.toppings}});
 
   static productsMock(): Product[] {
     return this.productList;
