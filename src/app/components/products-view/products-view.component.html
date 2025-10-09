@@ -1,22 +1,63 @@
 <div class="header-products-view">
   <h2>Seleccionar Producto</h2>
-  <span class="font-size-22"><strong>total:</strong> ${{ productsSelected() | totalPrice }}</span>
+  <span class="total-label">
+    <strong>Total:</strong> ${{ productsSelected() | totalPrice }}
+  </span>
 </div>
-<div class="products-container">
-  <div *ngIf="products()?.length else thereAreNotProducts">
-    @for (product of products(); track product.id) {
-      <div class="ordering-product">
-        <mat-card class="product-card {{(product | validProductsSelected: productsSelected()) ? 'product-selected' : ''}}"
-                  (click)="selected(product)">
-          <img ngSrc="{{product.product_image}}" alt="" width="200" height="300" class="border-radius-5">
-          <mat-card-title>{{product.product_name}}</mat-card-title>
-          <span>$ {{product.product_price}}</span>
-        </mat-card>
-      </div>
-    }
-  </div>
+
+<div class="products-container" *ngIf="products()?.length; else thereAreNotProducts">
+  @for (product of products(); track product.id) {
+    <mat-card
+      class="product-card"
+      [ngClass]="{ 'product-selected': product | validProductsSelected: productsSelected() }"
+      (click)="selected(product)"
+    >
+      <img ngSrc="{{product.product_image}}" width="200" height="300" alt="{{product.product_name}}" class="product-image"/>
+      <mat-card-content>
+        <h3 class="product-name">{{ product.product_name }}</h3>
+        <p class="product-description">{{ product.product_description }}</p>
+        <div class="product-price">$ {{ product.product_price }}</div>
+
+        <!-- Cantidad -->
+        <div class="quantity-selector" (click)="$event.stopPropagation()">
+          <button (click)="decrement(product)">−</button>
+          <input type="number" [value]="'1'" min="1" />
+          <button (click)="increment(product)">+</button>
+        </div>
+
+        <!-- Toppings opcionales -->
+        <div class="toppings" (click)="$event.stopPropagation()">
+          @for (top of product.toppings; track top.name; let i = $index) {
+            <mat-checkbox [disabled]="!(product | validProductsSelected: productsSelected())"
+              (change)="selectTopping($event, product.id, top)" >{{top.name}} </mat-checkbox>
+          }
+        </div>
+      </mat-card-content>
+    </mat-card>
+  }
+</div>
+
+<div class="cancel-button-container">
+  <button class="margin-2-px" mat-stroked-button (click)="goBack.emit()">Cancelar</button>
+  <button class="margin-2-px" mat-flat-button [disabled]="!productsSelected()?.length"
+          (click)="sendOrder()">Hacer Pedido</button>
 </div>
 
 <ng-template #thereAreNotProducts>
-  <h4 class="color-brown">No hay productos, comuniquese con el administrador</h4>
+  <h4 class="no-products-msg">No hay productos, comuníquese con el administrador</h4>
 </ng-template>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

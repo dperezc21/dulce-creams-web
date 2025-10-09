@@ -24,9 +24,3 @@
   font-size: 46px;
   border: black solid 2px;
 }
-
-.cancel-button-container {
-  display: flex;
-  justify-content: flex-end;
-  width: 90%;
-}

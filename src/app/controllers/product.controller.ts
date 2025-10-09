@@ -1,8 +1,9 @@
 import {Injectable, signal, WritableSignal} from '@angular/core';
-import {catchError, concatMap, map, of, tap} from 'rxjs';
+import {concatMap, map, tap} from 'rxjs';
 import {Product} from '../interfaces/product';
 import {SnackBarService} from '../services/snack-bar.service';
 import {ProductService} from '../services/product-service';
+import {ProductsMock} from './products.mock';
 
 @Injectable({ providedIn: "root" })
 export class ProductController {
@@ -28,11 +29,12 @@ export class ProductController {
   }
 
   getAllProducts(): void {
-    this.productService.getProducts()
+    this.setProducts(ProductsMock.productsMock());
+    /*this.productService.getProducts()
       .pipe(tap((value: Product[]) => {
         this.setProducts(value ?? []);
       }), catchError(() => of("Error to get products")))
-      .subscribe({error: err => console.error(err)});
+      .subscribe({error: err => console.error(err)});*/
   }
 
   setProducts(productList: Product[]): void {
@@ -50,10 +52,6 @@ export class ProductController {
 
   getProducts$(): WritableSignal<Product[]> {
     return this.productsBS as WritableSignal<Product[]>;
-  }
-
-  getLengthProduct(): number {
-    return this.productsBS().length;
   }
 
   removeProductById(productId: number) {

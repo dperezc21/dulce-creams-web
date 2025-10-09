@@ -1,38 +1,126 @@
+
+.cancel-button-container {
+  display: flex;
+  justify-content: flex-end;
+  width: 90%;
+}
+
 .header-products-view {
   display: flex;
-  flex-direction: row;
   justify-content: space-between;
   align-items: center;
+  padding: 1rem;
+  background-color: #fdfaf5;
+  border-bottom: 2px solid #ddd5c7;
+}
+
+.total-label {
+  font-size: 18px;
+  color: #5a3e2b;
 }
 
 .products-container {
   display: flex;
-  flex-direction: row;
-  height: 75dvh;
-  width: 100%;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  padding: 1.5rem;
+  background-color: #fffefc;
   justify-content: center;
-  align-items: center;
 }
 
-.ordering-product {
-  display: flex;
-  flex-direction: column;
-  margin: 5px;
-}
-
+/* Estilo de la card */
 .product-card {
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: center;
-  height: 370px;
+  width: 280px;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(90, 60, 50, 0.1);
+  transition: transform 0.2s, box-shadow 0.3s;
   cursor: pointer;
+  background-color: #ffffff;
+  border: 2px solid transparent;
 }
 
-.border-radius-5 {
-  border-radius: 5px;
+.product-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 6px 16px rgba(90, 60, 50, 0.15);
 }
 
 .product-selected {
-  border: 4px solid #59bf71;
+  border-color: #98c1a1; /* verde menta suave */
+}
+
+/* Imagen */
+.product-image {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+}
+
+/* Contenido */
+.product-name {
+  font-size: 18px;
+  font-weight: 600;
+  margin: 0.5rem 0 0.2rem;
+  color: #3e2f20;
+}
+
+.product-description {
+  font-size: 14px;
+  color: #6e5c4e;
+  margin-bottom: 0.5rem;
+}
+
+.product-price {
+  font-size: 16px;
+  font-weight: bold;
+  color: #5e3d2c;
+  margin-bottom: 0.8rem;
+}
+
+/* Selector de cantidad */
+.quantity-selector {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.8rem;
+}
+
+.quantity-selector button {
+  background-color: #e8e1d9;
+  border: none;
+  padding: 0.3rem 0.6rem;
+  font-size: 16px;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.quantity-selector input {
+  width: 40px;
+  text-align: center;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+/* Toppings */
+.toppings {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 14px;
+  color: #4a3d33;
+}
+
+.toppings label {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+/* Mensaje sin productos */
+.no-products-msg {
+  padding: 2rem;
+  text-align: center;
+  color: #a94442;
+  font-weight: 600;
 }

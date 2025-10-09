@@ -7,7 +7,7 @@ import {Product} from '../interfaces/product';
 })
 export class ValidProductsSelectedPipe implements PipeTransform {
 
-  transform(currentProduct: Product, productsSelected: Product[]): unknown {
+  transform(currentProduct: Product, productsSelected: Product[]): boolean {
     return productsSelected.findIndex((product: Product) => product.id === currentProduct.id) !== -1;
   }
 

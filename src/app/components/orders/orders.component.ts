@@ -2,14 +2,12 @@ import {Component, OnInit, signal} from '@angular/core';
 import {ProductController} from '../../controllers/product.controller';
 import {Product} from '../../interfaces/product';
 import {ProductsViewComponent} from '../products-view/products-view.component';
-import {MatButton} from '@angular/material/button';
 import {Ordering} from '../../interfaces/ordering';
 
 @Component({
   selector: 'app-orders',
   imports: [
-    ProductsViewComponent,
-    MatButton
+    ProductsViewComponent
   ],
   templateUrl: './orders.component.html',
   standalone: true,
@@ -27,11 +25,7 @@ export class OrdersComponent implements OnInit {
     this.products = this.productController.getProducts$();
   }
 
-  productsSelected(ordering1: Ordering[]) {
-    this.orderingProducts.update(() => [...ordering1]);
-  }
-
-  doOrder() {
-    console.log("hacer pedido");
+  doOrder($event: Ordering[]) {
+    console.log("hacer pedido", $event);
   }
 }
