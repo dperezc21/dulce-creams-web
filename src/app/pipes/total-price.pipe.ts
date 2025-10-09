@@ -1,5 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import {Product} from '../interfaces/product';
+import {Product, ProductTopping} from '../interfaces/product';
 
 @Pipe({
   standalone: true,
@@ -9,8 +9,14 @@ export class TotalPricePipe implements PipeTransform {
 
   transform(products: Product[]): number {
     return products.reduce((previousValue, currentValue) => {
-      return previousValue + currentValue.product_price;
+      return previousValue + currentValue.product_price + this.sumToppingsPrice(currentValue.toppings);
     }, 0) as number ?? 0;
+  }
+
+  sumToppingsPrice(toppings: ProductTopping[] | undefined): number {
+    return toppings?.reduce((previousValue: number, currentValue: ProductTopping) => {
+      return currentValue.selected ? previousValue + currentValue.price : previousValue;
+    }, 0) ?? 0;
   }
 
 }
