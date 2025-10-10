@@ -8,6 +8,7 @@ import {TotalPricePipe} from '../../pipes/total-price.pipe';
 import {FormsModule} from '@angular/forms';
 import {MatCheckbox} from '@angular/material/checkbox';
 import {MatButton} from '@angular/material/button';
+import {CountProductPipe} from '../../pipes/count-product.pipe';
 
 @Component({
   selector: 'app-products-view',
@@ -21,7 +22,8 @@ import {MatButton} from '@angular/material/button';
     NgClass,
     MatCardContent,
     MatCheckbox,
-    MatButton
+    MatButton,
+    CountProductPipe
   ],
   templateUrl: './products-view.component.html',
   standalone: true,
@@ -49,17 +51,25 @@ export class ProductsViewComponent {
   }
 
   mapProductSelected(): Ordering[] {
-    return this.productsSelected().map((value: Product) => {
-      return {product: value}
-    }) as Ordering[];
+    return this.productsSelected().reduce((previousValue: Ordering[], currentValue: Product) => {
+      const productCurrentIndex: number = previousValue.findIndex(value => currentValue.id === value.product.id) as number;
+      if(productCurrentIndex === -1) previousValue.push({ product: currentValue, quantity: 1});
+      else previousValue[productCurrentIndex].quantity+=1;
+      return previousValue;
+    }, []) as Ordering[];
   }
 
   decrement(product: Product) {
-
+    const findIndexProduct: Product = this.productsSelected().find(value => value.id === product.id) as Product;
+    if(!findIndexProduct?.id) return;
+    let filterProduct: Product[] = this.productsSelected().filter(value => value.id === findIndexProduct.id);
+    const filter: Product[] = this.productsSelected().filter(value => value.id !== findIndexProduct.id);
+    if(filterProduct?.length) filterProduct.shift();
+    this.productsSelected.set([...filter, ...filterProduct]);
   }
 
   increment(product: Product) {
-
+    this.productsSelected.update(value => [...value, product]);
   }
 
   selectTopping($event: any, productId: number | undefined, topping: ProductTopping) {

@@ -21,7 +21,7 @@
         <!-- Cantidad -->
         <div class="quantity-selector" (click)="$event.stopPropagation()">
           <button (click)="decrement(product)">−</button>
-          <input type="number" [value]="'1'" min="1" />
+          <input type="number" [value]="product | countProduct: productsSelected()" min="1" />
           <button (click)="increment(product)">+</button>
         </div>
 
@@ -39,7 +39,7 @@
 
 <div class="cancel-button-container">
   <button class="margin-2-px" mat-stroked-button (click)="goBack.emit()">Cancelar</button>
-  <button class="margin-2-px" mat-flat-button [disabled]="!productsSelected()?.length"
+  <button class="margin-2-px" mat-flat-button [disabled]="!productsSelected().length"
           (click)="sendOrder()">Hacer Pedido</button>
 </div>
 
