@@ -1,17 +1,33 @@
-
+.view-container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  align-items: center;
+}
 .cancel-button-container {
   display: flex;
   justify-content: flex-end;
   width: 90%;
+  position: absolute;
+  bottom: 0;
+  margin-bottom: 2px;
+}
+
+.flex-column {
+  display: flex;
+  flex-direction: column;
 }
 
 .header-products-view {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 1rem;
   background-color: #fdfaf5;
   border-bottom: 2px solid #ddd5c7;
+  position: absolute;
+  top: 0;
+  width: 70%;
+  font-family: 'Agency FB', serif;
 }
 
 .total-label {

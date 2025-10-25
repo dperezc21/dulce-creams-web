@@ -25,7 +25,7 @@ export class ProductsMock {
     },
     {
       id: 3,
-      product_name: "fresas con chocolate",
+      product_name: "fresas con Browni",
       product_description: "",
       product_price: 10000,
       product_image: "/img.webp"

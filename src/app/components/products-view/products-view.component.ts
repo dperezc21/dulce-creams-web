@@ -1,4 +1,4 @@
-import {Component, input, output, signal} from '@angular/core';
+import {Component, input, OnInit, output, signal} from '@angular/core';
 import {Product, ProductTopping} from '../../interfaces/product';
 import {NgClass, NgIf, NgOptimizedImage} from '@angular/common';
 import {MatCard, MatCardContent} from '@angular/material/card';
@@ -9,6 +9,7 @@ import {FormsModule} from '@angular/forms';
 import {MatCheckbox} from '@angular/material/checkbox';
 import {MatButton} from '@angular/material/button';
 import {CountProductPipe} from '../../pipes/count-product.pipe';
+import {ProductsViewController} from '../../controllers/products-view.controller';
 
 @Component({
   selector: 'app-products-view',
@@ -29,12 +30,15 @@ import {CountProductPipe} from '../../pipes/count-product.pipe';
   standalone: true,
   styleUrl: './products-view.component.css'
 })
-export class ProductsViewComponent {
+export class ProductsViewComponent implements OnInit {
 
   goBack = output<void>();
   products = input<Product[]>();
   productsSelectedToOrder = output<Ordering[]>();
   productsSelected = signal<Product[]>([]);
+  productsList = signal<Product[]>([]);
+
+  constructor(protected productsViewController: ProductsViewController) {}
 
   selected(product: Product) {
     const productIsSelected: Product = this.productsSelected().find(value => value?.id === product?.id) as Product;
@@ -50,15 +54,6 @@ export class ProductsViewComponent {
     this.productsSelected.update(() => [...filterProducts]);
   }
 
-  mapProductSelected(): Ordering[] {
-    return this.productsSelected().reduce((previousValue: Ordering[], currentValue: Product) => {
-      const productCurrentIndex: number = previousValue.findIndex(value => currentValue.id === value.product.id) as number;
-      if(productCurrentIndex === -1) previousValue.push({ product: currentValue, quantity: 1});
-      else previousValue[productCurrentIndex].quantity+=1;
-      return previousValue;
-    }, []) as Ordering[];
-  }
-
   decrement(product: Product) {
     const findIndexProduct: Product = this.productsSelected().find(value => value.id === product.id) as Product;
     if(!findIndexProduct?.id) return;
@@ -69,22 +64,34 @@ export class ProductsViewComponent {
   }
 
   increment(product: Product) {
+    this.addToProductsSelected(product);
+  }
+
+  selectTopping($event: any, productId: number | undefined, toppingSelected: ProductTopping) {
+    const productsSelectedMapped: Product[] = this.productsSelected()
+      .map(product => this.productsViewController.changeStateProductToppingSelected($event.checked, product, productId, toppingSelected));
+    this.productsSelected.set(productsSelectedMapped);
+  }
+
+  addToProductsSelected(product: Product) {
     this.productsSelected.update(value => [...value, product]);
   }
 
-  selectTopping($event: any, productId: number | undefined, topping: ProductTopping) {
-    this.productsSelected.set(this.productsSelected().map((product: Product) => {
-      if(product.id === productId) {
-        product.toppings = product.toppings?.map((value: ProductTopping) => {
-          if(value.name === topping.name) value.selected = $event.checked;
-          return value;
-        }) as ProductTopping[];
-      }
-      return product;
-    }));
+  addOther(product: Product) {
+    let newProduct: Product = {...product};
+    newProduct.id = product?.id as number + this.productsViewController.maijorProductId(this.productsList()) + this.productsSelected().length + 1;
+    const findIndex: number = this.productsList().findIndex(value => value.id == product.id) as number;
+    if(findIndex === -1) return;
+    const products: Product[] = this.productsViewController.setProductInIndex(this.productsList(), newProduct, findIndex);
+    this.productsList.set(products);
+    this.productsSelected.set(products);
   }
 
   sendOrder() {
-    this.productsSelectedToOrder.emit(this.mapProductSelected());
+    this.productsSelectedToOrder.emit(this.productsViewController.mapProductSelected(this.productsSelected()));
+  }
+
+  ngOnInit(): void {
+    this.productsList.set(this.products() as Product[]);
   }
 }
