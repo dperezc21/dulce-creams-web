@@ -7,10 +7,12 @@
 .cancel-button-container {
   display: flex;
   justify-content: flex-end;
-  width: 90%;
-  position: absolute;
+  width: 100%;
+  position: fixed;
   bottom: 0;
-  margin-bottom: 2px;
+  padding: 2px;
+  z-index: 3;
+  background-color: #fdfaf5;
 }
 
 .flex-column {
@@ -20,14 +22,16 @@
 
 .header-products-view {
   display: flex;
-  justify-content: space-between;
+  justify-content: space-around;
   align-items: center;
   background-color: #fdfaf5;
   border-bottom: 2px solid #ddd5c7;
-  position: absolute;
+  position: fixed;
   top: 0;
-  width: 70%;
+  width: 100%;
   font-family: 'Agency FB', serif;
+  z-index: 3;
+  height: 50px;
 }
 
 .total-label {
@@ -41,12 +45,18 @@
   gap: 1.5rem;
   padding: 1.5rem;
   background-color: #fffefc;
-  justify-content: center;
+  justify-content: flex-start;
+  z-index: 2;
+  margin-top: 45px;
+  margin-bottom: 30px;
+  overflow-y: auto;         /* Muestra scroll vertical cuando el contenido excede */
+  overflow-x: hidden;       /* Oculta el scroll horizontal */
+  width: auto;
 }
 
 /* Estilo de la card */
 .product-card {
-  width: 280px;
+  width: 260px;
   border-radius: 10px;
   box-shadow: 0 4px 12px rgba(90, 60, 50, 0.1);
   transition: transform 0.2s, box-shadow 0.3s;
@@ -67,7 +77,7 @@
 /* Imagen */
 .product-image {
   width: 100%;
-  height: 200px;
+  height: 150px;
   object-fit: cover;
   border-top-left-radius: 10px;
   border-top-right-radius: 10px;
@@ -88,7 +98,7 @@
 }
 
 .product-price {
-  font-size: 16px;
+  font-size: 15px;
   font-weight: bold;
   color: #5e3d2c;
   margin-bottom: 0.8rem;
@@ -122,15 +132,12 @@
 .toppings {
   display: flex;
   flex-direction: column;
-  gap: 4px;
-  font-size: 14px;
   color: #4a3d33;
 }
 
-.toppings label {
-  display: flex;
-  align-items: center;
-  gap: 5px;
+.other-product-button {
+  border-radius: 10px;
+  cursor: pointer;
 }
 
 /* Mensaje sin productos */

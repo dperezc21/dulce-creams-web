@@ -13,7 +13,8 @@
           [ngClass]="{ 'product-selected': product | validProductsSelected: productsSelected() }"
           (click)="selected(product)"
         >
-          <img ngSrc="{{product.product_image}}" width="200" height="300" alt="{{product.product_name}}" class="product-image"/>
+          <img ngSrc="{{product.product_image}}" class="product-image" width="150" height="250"
+               alt="{{product.product_name}}"/>
           <mat-card-content>
             <h3 class="product-name">{{ product.product_name }}</h3>
             <p class="product-description">{{ product.product_description }}</p>
@@ -33,7 +34,7 @@
               }
             </div>
           </mat-card-content>
-          <button mat-raised-button
+          <button mat-raised-button class="other-product-button"
                   [disabled]="!(product | validProductsSelected: productsSelected())"
                   (click)="$event.stopPropagation(); addOther(product)">Pedir Otro</button>
 

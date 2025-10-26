@@ -84,7 +84,7 @@ export class ProductsViewComponent implements OnInit {
     if(findIndex === -1) return;
     const products: Product[] = this.productsViewController.setProductInIndex(this.productsList(), newProduct, findIndex);
     this.productsList.set(products);
-    this.productsSelected.set(products);
+    this.productsSelected.update(value => [...value, newProduct]);
   }
 
   sendOrder() {
