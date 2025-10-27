@@ -1,4 +1,4 @@
-import {Component, input, OnInit, output, signal} from '@angular/core';
+import {Component, inject, input, OnInit, output, signal} from '@angular/core';
 import {Product, ProductTopping} from '../../interfaces/product';
 import {NgClass, NgIf, NgOptimizedImage} from '@angular/common';
 import {MatCard, MatCardContent} from '@angular/material/card';
@@ -11,6 +11,9 @@ import {MatButton} from '@angular/material/button';
 import {CountProductPipe} from '../../pipes/count-product.pipe';
 import {ProductsViewController} from '../../controllers/products-view.controller';
 import {MatIcon} from '@angular/material/icon';
+import {MatDialog} from '@angular/material/dialog';
+import {ConfirmDialogComponent} from '../confirm-dialog/confirm-dialog.component';
+import {tap} from 'rxjs';
 
 @Component({
   selector: 'app-products-view',
@@ -34,6 +37,7 @@ import {MatIcon} from '@angular/material/icon';
 })
 export class ProductsViewComponent implements OnInit {
 
+  private readonly dialog = inject(MatDialog);
   goBack = output<void>();
   products = input<Product[]>();
   productsSelectedToOrder = output<Ordering[]>();
@@ -98,8 +102,19 @@ export class ProductsViewComponent implements OnInit {
   }
 
   remove(product: Product) {
-    let filterProduct: Product[] = this.productsList().filter(value => value.id !== product.id);
-    this.productsList.set(filterProduct);
-    this.productsSelected.set(filterProduct);
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      width: '350px',
+      enterAnimationDuration: "200ms",
+    });
+    dialogRef.componentInstance.title = `Remover ${product.product_name}`;
+    dialogRef.componentInstance.message = "¿Seguro que quiere remover este producto?";
+    dialogRef.afterClosed()
+      .pipe(tap((value: boolean) => {
+        if(value) {
+          let productsFiltered: Product[] = this.productsList().filter(value => value.id !== product.id);
+          this.productsList.set(productsFiltered);
+          this.productsSelected.set(productsFiltered);
+        }
+      })).subscribe();
   }
 }
