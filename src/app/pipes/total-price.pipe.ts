@@ -7,10 +7,11 @@ import {Product, ProductTopping} from '../interfaces/product';
 })
 export class TotalPricePipe implements PipeTransform {
 
-  transform(products: Product[]): number {
-    return products.reduce((previousValue, currentValue) => {
+  transform(products: Product[]): string {
+    const sum: number = products.reduce((previousValue, currentValue) => {
       return previousValue + currentValue.product_price + this.sumToppingsPrice(currentValue.toppings);
     }, 0) as number ?? 0;
+    return `$${sum} Pesos`;
   }
 
   sumToppingsPrice(toppings: ProductTopping[] | undefined): number {
