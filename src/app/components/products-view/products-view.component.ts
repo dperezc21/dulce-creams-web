@@ -10,6 +10,7 @@ import {MatCheckbox} from '@angular/material/checkbox';
 import {MatButton} from '@angular/material/button';
 import {CountProductPipe} from '../../pipes/count-product.pipe';
 import {ProductsViewController} from '../../controllers/products-view.controller';
+import {MatIcon} from '@angular/material/icon';
 
 @Component({
   selector: 'app-products-view',
@@ -24,7 +25,8 @@ import {ProductsViewController} from '../../controllers/products-view.controller
     MatCardContent,
     MatCheckbox,
     MatButton,
-    CountProductPipe
+    CountProductPipe,
+    MatIcon
   ],
   templateUrl: './products-view.component.html',
   standalone: true,
@@ -93,5 +95,11 @@ export class ProductsViewComponent implements OnInit {
 
   ngOnInit(): void {
     this.productsList.set(this.products() as Product[]);
+  }
+
+  remove(product: Product) {
+    let filterProduct: Product[] = this.productsList().filter(value => value.id !== product.id);
+    this.productsList.set(filterProduct);
+    this.productsSelected.set(filterProduct);
   }
 }

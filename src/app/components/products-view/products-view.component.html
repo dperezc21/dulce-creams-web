@@ -2,7 +2,7 @@
   <div class="header-products-view">
     <h2>Dulce Creams</h2>
     <span class="total-label">
-    <strong>Total:</strong> ${{ productsSelected() | totalPrice }}
+    <strong>Total:</strong> {{ productsSelected() | totalPrice }}
   </span>
   </div>
 
@@ -34,18 +34,30 @@
               }
             </div>
           </mat-card-content>
-          <button mat-raised-button class="other-product-button"
-                  [disabled]="!(product | validProductsSelected: productsSelected())"
-                  (click)="$event.stopPropagation(); addOther(product)">Pedir Otro</button>
+          <div class="container-other-buttons" (click)="$event.stopPropagation()">
+            <button mat-raised-button class="other-product-button"
+                    *ngIf="!(product | validProductsSelected: products() ?? [])"
+                    (click)="remove(product)">
+              <mat-icon class="material-icons color-red">delete</mat-icon> <span class="color-red">Remover</span></button>
+            <button mat-flat-button class="other-product-button"
+                    [disabled]="!(product | validProductsSelected: productsSelected())"
+                    (click)="$event.stopPropagation(); addOther(product)">
+              <mat-icon class="material-icons">add_circle</mat-icon> Agregar
+            </button>
+          </div>
 
         </mat-card>
     }
   </div>
 
   <div class="cancel-button-container">
-    <button class="margin-2-px" mat-stroked-button (click)="goBack.emit()">Cancelar</button>
-    <button class="margin-2-px" mat-flat-button [disabled]="!productsSelected().length"
-            (click)="sendOrder()">Hacer Pedido</button>
+    <p class="quantity-selected">
+      Total Pedidos: {{productsSelected().length || 0}} </p>
+    <div>
+      <button class="margin-2-px" mat-stroked-button (click)="goBack.emit()">Cancelar</button>
+      <button class="margin-2-px" mat-flat-button [disabled]="!productsSelected().length"
+              (click)="sendOrder()">Hacer Pedido</button>
+    </div>
   </div>
 </div>
 

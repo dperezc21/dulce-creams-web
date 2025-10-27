@@ -6,13 +6,14 @@
 }
 .cancel-button-container {
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-around;
   width: 100%;
   position: fixed;
   bottom: 0;
-  padding: 2px;
+  padding: 2px 6px 2px 0;
   z-index: 3;
   background-color: #fdfaf5;
+  font-family: 'Agency FB', serif;
 }
 
 .flex-column {
@@ -63,6 +64,8 @@
   cursor: pointer;
   background-color: #ffffff;
   border: 2px solid transparent;
+  max-height: fit-content;
+  padding-bottom: 10px;
 }
 
 .product-card:hover {
@@ -71,7 +74,7 @@
 }
 
 .product-selected {
-  border-color: #98c1a1; /* verde menta suave */
+  border: solid 3px #98c1a1; /* verde menta suave */
 }
 
 /* Imagen */
@@ -135,9 +138,23 @@
   color: #4a3d33;
 }
 
+.container-other-buttons {
+  display: flex;
+  justify-content:space-around;
+  width: 260px;
+}
+
 .other-product-button {
-  border-radius: 10px;
+  display: flex;
+  border-radius: 14px;
   cursor: pointer;
+  height: 32px;
+  font-size: 13px;
+  justify-content: center;
+}
+
+.color-red {
+  color:red;
 }
 
 /* Mensaje sin productos */
@@ -145,5 +162,14 @@
   padding: 2rem;
   text-align: center;
   color: #a94442;
+  font-weight: 600;
+}
+
+.quantity-selected {
+  display: flex;
+  align-items: center;
+  margin: 2px;
+  font-family: 'Agency FB', serif;
+  font-size: 18px;
   font-weight: 600;
 }
