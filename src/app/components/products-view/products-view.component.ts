@@ -1,6 +1,6 @@
 import {Component, inject, input, OnInit, output, signal} from '@angular/core';
 import {Product, ProductTopping} from '../../interfaces/product';
-import {NgClass, NgIf, NgOptimizedImage} from '@angular/common';
+import {NgClass, NgForOf, NgIf, NgOptimizedImage} from '@angular/common';
 import {MatCard, MatCardContent} from '@angular/material/card';
 import {Ordering} from '../../interfaces/ordering';
 import {ValidProductsSelectedPipe} from '../../pipes/products-selected.pipe';
@@ -75,7 +75,9 @@ export class ProductsViewComponent implements OnInit {
 
   selectTopping($event: any, productId: number | undefined, toppingSelected: ProductTopping) {
     const productsSelectedMapped: Product[] = this.productsSelected()
-      .map(product => this.productsViewController.changeStateProductToppingSelected($event.checked, product, productId, toppingSelected));
+      .map(product => product.id === productId
+        ? this.productsViewController.changeStateProductToppingSelected($event.checked, product, toppingSelected)
+        : product);
     this.productsSelected.set(productsSelectedMapped);
   }
 
@@ -98,7 +100,7 @@ export class ProductsViewComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.productsList.set(this.products() as Product[]);
+    this.productsList.set([...this.products() as Product[]]);
   }
 
   remove(product: Product) {

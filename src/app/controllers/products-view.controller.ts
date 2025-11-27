@@ -2,7 +2,6 @@ import {Injectable} from '@angular/core';
 import {Ordering} from '../interfaces/ordering';
 import {Product, ProductTopping} from '../interfaces/product';
 
-
 @Injectable({ providedIn: "root" })
 export class ProductsViewController {
 
@@ -15,13 +14,11 @@ export class ProductsViewController {
     }, []) as Ordering[];
   }
 
-  changeStateProductToppingSelected(toppingChecked: boolean , product: Product, productId: number | undefined, topping: ProductTopping): Product {
-    if(product.id === productId) {
-      product.toppings = product.toppings?.map((value: ProductTopping) => {
-        if(value.name === topping.name) value.selected = toppingChecked;
-        return value;
-      }) as ProductTopping[];
-    }
+  changeStateProductToppingSelected(toppingChecked: boolean , product: Product, topping: ProductTopping): Product {
+    product.toppings = product.toppings?.map((value: ProductTopping) => {
+      if(value.name === topping.name) value.selected = toppingChecked;
+      return value;
+    }) as ProductTopping[];
     return product;
   }
 
