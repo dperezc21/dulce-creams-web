@@ -52,7 +52,7 @@ export class ProductsPanelComponent implements OnInit {
       enterAnimationDuration: "500ms",
       exitAnimationDuration: "250ms",
     })
-    dialogRef.componentInstance.title = `Eliminar ${product.product_name}`;
+    dialogRef.componentInstance.title = `Eliminar ${product.name}`;
     dialogRef.componentInstance.message = "¿Seguro que quiere eliminar este producto?";
     dialogRef.afterClosed().subscribe(value => {
       if(value) this.productController.removeProductById(product.id as number);

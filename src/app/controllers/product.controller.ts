@@ -14,10 +14,10 @@ export class ProductController {
               private snackBarService: SnackBarService) {
   }
 
-  saveProduct({ product_image, ...productToSave }: Product): void {
+  saveProduct({ image, ...productToSave }: Product): void {
     this.productService.saveProducts(productToSave)
        .pipe(concatMap(value => {
-         return this.productService.updateFile(product_image as File)
+         return this.productService.updateFile(image as File)
            .pipe(map(value1 => value1 ? value : null));
        })).pipe(tap(value => {
          if(value?.id) {

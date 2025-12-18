@@ -11,24 +11,24 @@ export class ProductsMock {
   private static productList: Product[] = [
     {
       id: 1,
-      product_name: "fresas con crema",
-      product_description: "",
-      product_price: 13000,
-      product_image: "/img.webp"
+      name: "fresas con crema",
+      description: "",
+      price: 13000,
+      image: "/img.webp"
     },
     {
       id: 2,
-      product_name: "fresas con chocolate",
-      product_description: "",
-      product_price: 10000,
-      product_image: "/img.webp"
+      name: "fresas con chocolate",
+      description: "",
+      price: 10000,
+      image: "/img.webp"
     },
     {
       id: 3,
-      product_name: "fresas con Browni",
-      product_description: "",
-      product_price: 10000,
-      product_image: "/img.webp"
+      name: "fresas con Browni",
+      description: "",
+      price: 10000,
+      image: "/img.webp"
     }
   ].map(value => {return{...value, toppings: this.toppings}});
 

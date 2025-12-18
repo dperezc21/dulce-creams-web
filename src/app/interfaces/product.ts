@@ -1,11 +1,13 @@
 
 export interface Product {
   id?: number;
-  product_name: string;
-  product_price: number;
-  product_image?: string | File;
-  product_description: string;
+  name: string;
+  price: number;
+  image?: string | File;
+  description: string;
   toppings?: ProductTopping[];
+  selected?: boolean,
+  quantity?: number
 }
 
 export interface ProductTopping {

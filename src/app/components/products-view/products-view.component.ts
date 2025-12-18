@@ -1,14 +1,13 @@
-import {Component, inject, input, OnInit, output, signal} from '@angular/core';
+import {Component, inject, input, OnInit, output} from '@angular/core';
 import {Product, ProductTopping} from '../../interfaces/product';
 import {NgClass, NgForOf, NgIf, NgOptimizedImage} from '@angular/common';
 import {MatCard, MatCardContent} from '@angular/material/card';
 import {Ordering} from '../../interfaces/ordering';
-import {ValidProductsSelectedPipe} from '../../pipes/products-selected.pipe';
 import {TotalPricePipe} from '../../pipes/total-price.pipe';
-import {FormsModule} from '@angular/forms';
+import {FormArray, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {MatCheckbox} from '@angular/material/checkbox';
 import {MatButton} from '@angular/material/button';
-import {CountProductPipe} from '../../pipes/count-product.pipe';
+import {ValidProductsSelectedPipe} from '../../pipes/products-selected.pipe';
 import {ProductsViewController} from '../../controllers/products-view.controller';
 import {MatIcon} from '@angular/material/icon';
 import {MatDialog} from '@angular/material/dialog';
@@ -20,7 +19,6 @@ import {tap} from 'rxjs';
   imports: [
     NgOptimizedImage,
     MatCard,
-    ValidProductsSelectedPipe,
     TotalPricePipe,
     NgIf,
     FormsModule,
@@ -28,8 +26,10 @@ import {tap} from 'rxjs';
     MatCardContent,
     MatCheckbox,
     MatButton,
-    CountProductPipe,
-    MatIcon
+    MatIcon,
+    ReactiveFormsModule,
+    NgForOf,
+    ValidProductsSelectedPipe
   ],
   templateUrl: './products-view.component.html',
   standalone: true,
@@ -41,82 +41,101 @@ export class ProductsViewComponent implements OnInit {
   goBack = output<void>();
   products = input<Product[]>();
   productsSelectedToOrder = output<Ordering[]>();
-  productsSelected = signal<Product[]>([]);
-  productsList = signal<Product[]>([]);
+  productsForm!: FormGroup;
 
-  constructor(protected productsViewController: ProductsViewController) {}
+  constructor(private formBuilder: FormBuilder, protected productsViewController: ProductsViewController) {}
 
-  selected(product: Product) {
-    const productIsSelected: Product = this.productsSelected().find(value => value?.id === product?.id) as Product;
-    if(productIsSelected?.id) {
-      this.discard(productIsSelected);
-      return;
-    }
-    this.productsSelected.update((value: Product[]) => [...value, product]);
+  getProductValueByIndex(indexProduct: number): Product {
+    return this.formArrayProducts.at(indexProduct).value as Product;
+  }
+  selectProduct(indexProduct: number) {
+    const getProduct: Product = this.getProductValueByIndex(indexProduct);
+    getProduct.selected = !getProduct.selected;
+    getProduct.quantity = !getProduct.selected ? 0 : 1;
+    this.formArrayProducts.at(indexProduct).setValue(getProduct);
   }
 
-  discard(product: Product) {
-    const filterProducts: Product[] = this.productsSelected().filter((value1: Product) => value1.id !== product.id);
-    this.productsSelected.update(() => [...filterProducts]);
+  decrement(indexProduct: number) {
+    const getProduct: Product = this.getProductValueByIndex(indexProduct);
+    getProduct.quantity = getProduct.quantity == 0 ? getProduct.quantity : getProduct.quantity as number - 1;
+    if(getProduct.quantity === 0) getProduct.selected = !getProduct.selected;
+    this.formArrayProducts.at(indexProduct).setValue(getProduct);
   }
 
-  decrement(product: Product) {
-    const findIndexProduct: Product = this.productsSelected().find(value => value.id === product.id) as Product;
-    if(!findIndexProduct?.id) return;
-    let filterProduct: Product[] = this.productsSelected().filter(value => value.id === findIndexProduct.id);
-    const filter: Product[] = this.productsSelected().filter(value => value.id !== findIndexProduct.id);
-    if(filterProduct?.length) filterProduct.shift();
-    this.productsSelected.set([...filter, ...filterProduct]);
+  increment(indexProduct: number) {
+    const getProduct: Product = this.getProductValueByIndex(indexProduct);
+    getProduct.quantity = getProduct.quantity as number + 1;
+    if(!getProduct.selected) getProduct.selected = !getProduct.selected;
+    this.formArrayProducts.at(indexProduct).setValue(getProduct);
   }
 
-  increment(product: Product) {
-    this.addToProductsSelected(product);
-  }
-
-  selectTopping($event: any, productId: number | undefined, toppingSelected: ProductTopping) {
-    const productsSelectedMapped: Product[] = this.productsSelected()
-      .map(product => product.id === productId
-        ? this.productsViewController.changeStateProductToppingSelected($event.checked, product, toppingSelected)
-        : product);
-    this.productsSelected.set(productsSelectedMapped);
-  }
-
-  addToProductsSelected(product: Product) {
-    this.productsSelected.update(value => [...value, product]);
-  }
-
-  addOther(product: Product) {
-    let newProduct: Product = {...product};
-    newProduct.id = product?.id as number + this.productsViewController.maijorProductId(this.productsList()) + this.productsSelected().length + 1;
-    const findIndex: number = this.productsList().findIndex(value => value.id == product.id) as number;
-    if(findIndex === -1) return;
-    const products: Product[] = this.productsViewController.setProductInIndex(this.productsList(), newProduct, findIndex);
-    this.productsList.set(products);
-    this.productsSelected.update(value => [...value, newProduct]);
+  addOther(product: Product, productIndex: number) {
+    product.id = product?.id as number + this.productsViewController.productIdGreater(this.formArrayProducts.value) + this.formArrayProducts.value.length + 1;
+    this.formArrayProducts.insert(productIndex + 1, this.buildProductForm(product));
   }
 
   sendOrder() {
-    this.productsSelectedToOrder.emit(this.productsViewController.mapProductSelected(this.productsSelected()));
+    this.productsSelectedToOrder.emit(this.productsViewController.mapProductSelected(this.formArrayProducts.value));
   }
 
-  ngOnInit(): void {
-    this.productsList.set([...this.products() as Product[]]);
+  toppingList(index: number): FormArray {
+    return this.formArrayProducts.at(index).get('toppings') as FormArray;
   }
 
-  remove(product: Product) {
+  get formArrayProducts(): FormArray {
+    return this.productsForm.get('products') as FormArray;
+  }
+
+  buildProductForm(product: Product): FormGroup {
+    const toppings = product.toppings?.map(value => this.buildToppingsForm(value)) ?? [];
+    return this.formBuilder?.group({
+      id: [product.id ?? ""],
+      name: [product.name ?? ""],
+      description: [product.description ?? ""],
+      price: [product.price ?? 0],
+      image: [product.image ?? ""],
+      toppings: this.formBuilder.array(toppings),
+      selected: [product.selected ?? false],
+      quantity: [0]
+    })
+  }
+
+  buildToppingsForm(topping: ProductTopping): FormGroup {
+    return this.formBuilder?.group({
+      price: [topping?.price ?? ""],
+      name: [topping?.name ?? ""],
+      selected: [topping?.selected ?? false]
+    })
+  }
+
+  remove(indexProduct: number) {
+    const product: Product = this.getProductValueByIndex(indexProduct);
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {
       width: '350px',
       enterAnimationDuration: "200ms",
     });
-    dialogRef.componentInstance.title = `Remover ${product.product_name}`;
+    dialogRef.componentInstance.title = `Remover ${product.name}`;
     dialogRef.componentInstance.message = "¿Seguro que quiere remover este producto?";
     dialogRef.afterClosed()
       .pipe(tap((value: boolean) => {
-        if(value) {
-          let productsFiltered: Product[] = this.productsList().filter(value => value.id !== product.id);
-          this.productsList.set(productsFiltered);
-          this.productsSelected.set(productsFiltered);
-        }
+        if(value) this.formArrayProducts.removeAt(indexProduct);
       })).subscribe();
+  }
+
+  get someProductSelected(): boolean {
+    return this.formArrayProducts.value.some((value: Product) => value?.selected) as boolean;
+  }
+
+  get totalProductsSelected(): number {
+    return this.formArrayProducts.value.reduce((previous: number, current: Product) => {
+      return current.selected ? previous + 1 : previous;
+    }, 0)
+  }
+
+  ngOnInit(): void {
+    const formArrayProducts = this.formBuilder.array(this.products()?.map(value => this.buildProductForm(value)) ?? []);
+    this.productsForm = this.formBuilder.group({
+      products: formArrayProducts
+    })
   }
 }
